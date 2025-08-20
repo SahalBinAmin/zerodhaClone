@@ -217,14 +217,21 @@ app.get("/allpositions", async (req, res) => {
   res.json(allpositions);
 });
 
-app.get("/demoUser", async (req, res) => {
-  let fakeUser = new UserModel({
-    email: "Sahalbinamin37@gmail.com",
-    username: "Sahalo",
-  });
-
-  let registeredUser = await UserModel.register(fakeUser, "sahalo123");
-  res.send(registeredUser);
+app.post("/signup", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    let newUser = new UserModel({
+      email: email,
+      username: email,
+    });
+    let registeredUser = await UserModel.register(newUser, password);
+    res
+      .status(201)
+      .json({ message: `${registeredUser.email} registered successfully` });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "User couldn't register successfully" });
+  }
 });
 
 app.listen(PORT, () => {

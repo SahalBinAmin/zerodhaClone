@@ -6,53 +6,88 @@ function Signup() {
     email: "",
     password: "",
   });
+  const [message, setMessage] = useState("");
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const res = await fetch("http://localhost:3002/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData), // send email + password
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setMessage(" Signup successful!");
+      } else {
+        setMessage(` Error: ${data.message || "Something went wrong"}`);
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      setMessage(" Network error, try again later.");
+    }
+
     console.log("Form submitted:", formData);
   };
   return (
-    <div
-      className="signup-container"
-      style={{ maxWidth: "400px", margin: "2rem auto" }}
-    >
+    <div className="mb-5" style={{ maxWidth: "400px", margin: "2rem auto" }}>
       <h2>Signup</h2>
       <form onSubmit={handleSubmit}>
-        {/* Email Field */}
-        <div style={{ marginBottom: "1rem" }}>
-          <label>Email:</label>
+        <div className="mb-3">
+          <label htmlFor="loginEmail" className="form-label">
+            Email:
+          </label>
           <input
             type="email"
             name="email"
+            id="loginEmail"
+            className="form-control"
             value={formData.email}
             onChange={handleChange}
             required
-            style={{ width: "100%", padding: "8px", marginTop: "5px" }}
           />
+          <div className="form-text">
+            We'll never share your email with anyone else.
+          </div>
         </div>
 
-        {/* Password Field */}
-        <div style={{ marginBottom: "1rem" }}>
-          <label>Password:</label>
+        <div className="mb-3">
+          <label
+            htmlFor="loginPassword"
+            className="form-label"
+            id="loginPassword"
+          >
+            Password:
+          </label>
           <input
             type="password"
             name="password"
+            id="loginPassword"
+            className="form-control"
             value={formData.password}
             onChange={handleChange}
             required
-            style={{ width: "100%", padding: "8px", marginTop: "5px" }}
           />
         </div>
 
-        <button type="submit" style={{ padding: "10px 15px" }}>
+        <button type="submit" className="btn btn-primary">
           Sign Up
         </button>
       </form>
+      {message && (
+        <p class=" mt-1 alert alert-dark" role="alert">
+          {message}
+        </p>
+      )}
     </div>
   );
 }
