@@ -7,6 +7,10 @@ const PositionModel = require("./models/PositionModel");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const app = express();
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const UserModel = require("./models/UserModel");
+const session = require("express-session");
 
 const PORT = process.env.PORT || 3002;
 const uri = process.env.MONGO_URL;
@@ -23,6 +27,16 @@ async function main() {
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(
+  session({ secret: "myNewSecret", resave: false, saveUninitialized: true })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new LocalStrategy(UserModel.authenticate()));
+passport.serializeUser(UserModel.serializeUser());
+passport.deserializeUser(UserModel.deserializeUser());
+
 //------------ Route For Data Insertion Into The DataBase ------------
 
 // app.get("/addHoldings", async (req, res) => {
@@ -201,6 +215,16 @@ app.get("/allholdings", async (req, res) => {
 app.get("/allpositions", async (req, res) => {
   let allpositions = await PositionModel.find({});
   res.json(allpositions);
+});
+
+app.get("/demoUser", async (req, res) => {
+  let fakeUser = new UserModel({
+    email: "Sahalbinamin37@gmail.com",
+    username: "Sahalo",
+  });
+
+  let registeredUser = await UserModel.register(fakeUser, "sahalo123");
+  res.send(registeredUser);
 });
 
 app.listen(PORT, () => {

@@ -1,5 +1,5 @@
 const { Schema } = require("mongoose");
-const bcrypt = require("bcrypt");
+const passportLocalMongoose = require("passport-local-mongoose");
 
 const UserSchema = new Schema({
   email: {
@@ -7,18 +7,7 @@ const UserSchema = new Schema({
     required: [true, "Provide a unique Email address"],
     unique: true,
   },
-  username: {
-    type: String,
-    required: [true, "Username is required"],
-  },
-  password: {
-    type: String,
-    required: [true, "Password is required"],
-  },
 });
 
-UserSchema.pre("save", async function () {
-  this.password = await bcrypt.hash(this.password, 12);
-});
-
+UserSchema.plugin(passportLocalMongoose);
 module.exports = UserSchema;

@@ -10,7 +10,7 @@ function OpenAccount() {
           Modern platforms and apps, &#8377;0 investments, and flat &#8377;20
           intraday and F&O trades.
         </p>
-        <Link to={"/"}>
+        <Link to={"/signup"}>
           <button
             className="p-2 btn btn-primary fs-5 mb-5"
             style={{ width: "20%", margin: "0 auto" }}

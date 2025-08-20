@@ -19,16 +19,6 @@ function Nav() {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <form class="d-flex">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <Link
-                  class="nav-link active "
-                  aria-current="page"
-                  to={"/signup"}
-                >
-                  Signup
-                </Link>
-              </li>
-
               <li class="nav-item ">
                 <Link class="nav-link active" to={"/about"}>
                   About
@@ -50,6 +40,15 @@ function Nav() {
               <li class="nav-item ">
                 <Link class="nav-link active" to={"/support"}>
                   Support
+                </Link>
+              </li>
+              <li class="nav-item">
+                <Link
+                  class="nav-link active "
+                  aria-current="page"
+                  to={"/signup"}
+                >
+                  Signup
                 </Link>
               </li>
             </ul>

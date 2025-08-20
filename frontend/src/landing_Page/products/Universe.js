@@ -100,7 +100,7 @@ function Universe({ imageUrl, imageDesc, imageClick }) {
             stocks, sectors, supply chains, and more.
           </p>
         </div>
-        <Link to={"/"}>
+        <Link to={"/signup"}>
           <button
             className="p-2 btn mt-5 btn-primary fs-5 mb-5"
             style={{ width: "20%", marginLeft: "40%" }}
