@@ -9,6 +9,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const app = express();
 const session = require("express-session");
+const authenticateToken = require("./middleware/auth");
 
 const PORT = process.env.PORT || 3002;
 const uri = process.env.MONGO_URL;
