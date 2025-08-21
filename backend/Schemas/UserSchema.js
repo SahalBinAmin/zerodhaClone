@@ -1,5 +1,4 @@
 const { Schema } = require("mongoose");
-const passportLocalMongoose = require("passport-local-mongoose");
 
 const UserSchema = new Schema({
   email: {
@@ -7,7 +6,10 @@ const UserSchema = new Schema({
     required: [true, "Provide a unique Email address"],
     unique: true,
   },
+  password: {
+    type: String,
+    required: true,
+  },
 });
 
-UserSchema.plugin(passportLocalMongoose);
 module.exports = UserSchema;
