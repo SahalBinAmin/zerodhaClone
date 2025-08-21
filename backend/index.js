@@ -33,7 +33,9 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.use(new LocalStrategy(UserModel.authenticate()));
+passport.use(
+  new LocalStrategy({ usernameField: "email" }, UserModel.authenticate())
+);
 passport.serializeUser(UserModel.serializeUser());
 passport.deserializeUser(UserModel.deserializeUser());
 
@@ -232,6 +234,27 @@ app.post("/signup", async (req, res) => {
     console.error(err);
     res.status(500).json({ message: "User couldn't register successfully" });
   }
+});
+
+app.post("/login", (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) return next(err);
+
+    if (!user) {
+      return res
+        .status(401)
+        .json({ message: info?.message || "Invalid credentials" });
+    }
+
+    req.logIn(user, (err) => {
+      if (err) return next(err);
+
+      return res.status(200).json({
+        message: "Login successful",
+        user: { id: user._id, email: user.email },
+      });
+    });
+  })(req, res, next);
 });
 
 app.listen(PORT, () => {
