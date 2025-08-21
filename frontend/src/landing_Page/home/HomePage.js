@@ -6,7 +6,6 @@ import Education from "./Education";
 import Stats from "./Stats";
 import OpenAccount from "../OpenAccount";
 
-
 function HomePage() {
   return (
     <>

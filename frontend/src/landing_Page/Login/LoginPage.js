@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Signup() {
+function Login() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -18,34 +18,35 @@ function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      const res = await fetch("http://localhost:3002/signup", {
+      const res = await fetch("http://localhost:3002/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
+        credentials: "include",
       });
 
       const data = await res.json();
-      if (res.ok) {
-        setMessage(" Signup successful! Redirecting to login...");
-        setFormData({ email: "", password: "" });
 
-        setTimeout(() => {
-          navigate("/login");
-        }, 1500);
+      if (res.ok) {
+        setMessage("Login successful! Redirecting...");
+        setFormData({ email: "", password: "" });
+        localStorage.setItem("token", data.token);
+        window.location.href = "http://localhost:3001";
       } else {
-        setMessage(` Error: ${data.message || "Something went wrong"}`);
+        setMessage(` ${data.message || "Invalid credentials"}`);
       }
     } catch (error) {
-      console.error("Signup error:", error);
+      console.error("Login error:", error);
       setMessage(" Network error, try again later.");
     }
   };
   return (
     <div className="mb-5" style={{ maxWidth: "400px", margin: "2rem auto" }}>
-      <h2>Signup</h2>
+      <h2>Login To Dashboard</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="loginEmail" className="form-label">
@@ -60,9 +61,6 @@ function Signup() {
             onChange={handleChange}
             required
           />
-          <div className="form-text">
-            We'll never share your email with anyone else.
-          </div>
         </div>
 
         <div className="mb-3">
@@ -85,11 +83,11 @@ function Signup() {
         </div>
 
         <button type="submit" className="btn btn-primary">
-          Sign Up
+          Login
         </button>
       </form>
       {message && (
-        <div className=" mt-1 alert alert-dark" role="alert">
+        <div className="mt-3 alert alert-info text-center" role="alert">
           {message}
         </div>
       )}
@@ -97,4 +95,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default Login;
