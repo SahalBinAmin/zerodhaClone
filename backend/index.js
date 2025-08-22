@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const HoldingModel = require("./models/HoldingModel");
 const PositionModel = require("./models/PositionModel");
 const UserModel = require("./models/UserModel");
+const WatchlistModel = require("./models/WatchListModel");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -48,6 +49,25 @@ app.get("/allpositions", authenticateToken, async (req, res) => {
     res.json(allpositions);
   } catch (err) {
     res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.get("/watchlist", authenticateToken, async (req, res) => {
+  try {
+    const data = await WatchlistModel.find();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch watchlist" });
+  }
+});
+
+app.delete("/watchlist/:id", authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    await WatchlistModel.findByIdAndDelete(id);
+    res.json({ message: "Watchlist item deleted" });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to delete item" });
   }
 });
 
