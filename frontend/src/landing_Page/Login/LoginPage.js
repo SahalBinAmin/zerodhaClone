@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -7,7 +6,6 @@ function Login() {
     password: "",
   });
   const [message, setMessage] = useState("");
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -18,7 +16,6 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const res = await fetch("http://localhost:3002/login", {
         method: "POST",
@@ -34,8 +31,10 @@ function Login() {
       if (res.ok) {
         setMessage("Login successful! Redirecting...");
         setFormData({ email: "", password: "" });
-        localStorage.setItem("token", data.token);
-        window.location.href = "http://localhost:3001";
+
+        setTimeout(() => {
+          window.location.href = "http://localhost:3001";
+        }, 200);
       } else {
         setMessage(` ${data.message || "Invalid credentials"}`);
       }

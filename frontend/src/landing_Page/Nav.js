@@ -4,14 +4,14 @@ import { Link } from "react-router-dom";
 function Nav() {
   return (
     <nav
-      class="navbar navbar-expand-lg border-bottom pt-2"
+      className="navbar navbar-expand-lg border-bottom pt-2"
       style={{ backgroundColor: "#FFF " }}
     >
-      <div class="container">
-        <Link class="navbar-brand" to={"/"}>
+      <div className="container">
+        <Link className="navbar-brand" to={"/"}>
           <img
             src="media/images/logo.svg"
-            alt="image for logo"
+            alt="img for logo"
             style={{ width: "20%" }}
           ></img>
         </Link>

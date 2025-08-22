@@ -7,8 +7,8 @@ const UserModel = require("./models/UserModel");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 const app = express();
-const session = require("express-session");
 const authenticateToken = require("./middleware/auth");
 
 const PORT = process.env.PORT || 3002;
@@ -26,23 +26,29 @@ async function main() {
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "http://localhost:3001"],
     credentials: true,
   })
 );
 app.use(express.json());
-app.use(
-  session({ secret: "myNewSecret", resave: false, saveUninitialized: true })
-);
+app.use(cookieParser());
 
-app.get("/allholdings", async (req, res) => {
-  let allholdings = await HoldingModel.find({});
-  res.json(allholdings);
+app.get("/allholdings", authenticateToken, async (req, res) => {
+  try {
+    let allholdings = await HoldingModel.find({});
+    res.json(allholdings);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
 });
 
-app.get("/allpositions", async (req, res) => {
-  let allpositions = await PositionModel.find({});
-  res.json(allpositions);
+app.get("/allpositions", authenticateToken, async (req, res) => {
+  try {
+    let allpositions = await PositionModel.find({});
+    res.json(allpositions);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
 });
 
 app.post("/signup", async (req, res) => {
@@ -84,11 +90,23 @@ app.post("/login", async (req, res) => {
       process.env.JWT_SECRET || "mySecretKey",
       { expiresIn: "1h" }
     );
-    res.json({ message: "Login successful", token });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "Lax",
+      maxAge: 3600000,
+    });
+
+    res.json({ message: "Login successful" });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Error logging in" });
   }
+});
+
+app.post("/logout", (req, res) => {
+  res.clearCookie("token");
+  res.json({ message: "Logged out successfully" });
 });
 
 app.listen(PORT, () => {

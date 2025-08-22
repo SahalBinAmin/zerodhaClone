@@ -11,13 +11,23 @@ const Menu = () => {
   const handleProfileClick = (index) => {
     setIsProfileDropdownOpen(!isProfileDropdownOpen);
   };
-
+  const logOut = async () => {
+    try {
+      await fetch("http://localhost:3002/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+      window.location.href = "http://localhost:3000/"; 
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+  };
   const menuClass = "menu";
   const activeMenuClass = "menu selected";
 
   return (
     <div className="menu-container">
-      <img src="logo.png" style={{ width: "50px" }} />
+      <img src="logo.png" style={{ width: "50px" }} alt="img for logo" />
       <div className="menus">
         <ul>
           <li>
@@ -84,10 +94,10 @@ const Menu = () => {
             <Link
               style={{ textDecoration: "none" }}
               to="/apps"
-              onClick={() => handleMenuClick(6)}
+              onClick={logOut}
             >
               <p className={selectedMenu === 6 ? activeMenuClass : menuClass}>
-                Apps
+                LogOut
               </p>
             </Link>
           </li>
