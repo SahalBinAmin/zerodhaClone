@@ -7,9 +7,7 @@ const Orders = () => {
       <div className="no-orders">
         <p>You haven't placed any orders today</p>
 
-        <Link to={"/"} className="btn">
-          Get started
-        </Link>
+        <Link className="btn">Get started</Link>
       </div>
     </div>
   );

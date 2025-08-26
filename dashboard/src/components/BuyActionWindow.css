@@ -13,10 +13,6 @@
   border: 1px solid rgb(238, 238, 238);
 }
 
-.dragging {
-  opacity: 0;
-}
-
 .container .header {
   width: 100%;
   background: #4184f3;
@@ -212,9 +208,4 @@
 
 .btn-blue:hover {
   background: #74a7fa;
-}
-
-.btn-grey:hover {
-  background: #9b9b9b;
-  color: #fff;
 }

@@ -1,16 +1,32 @@
-import React, { useState, useContext } from "react";
-import { watchlist } from "../data/data";
-import { Tooltip, Grow } from "@mui/material";
+import React, { useState, useContext, useEffect } from "react";
+import axios from "axios";
+import { Tooltip } from "@mui/material";
 import GeneralContext from "./GeneralContext";
-import {
-  BarChartOutlined,
-  KeyboardArrowDown,
-  KeyboardArrowUp,
-  MoreHoriz,
-} from "@mui/icons-material";
+import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { DoughnutChart } from "./DoughnutChart";
 
 const WatchList = () => {
+  const [watchlist, setWatchlist] = useState([]);
+
+  useEffect(() => {
+    fetchWatchlist();
+  }, []);
+
+  const fetchWatchlist = async () => {
+    try {
+      const res = await axios.get("http://localhost:3002/watchlist", {
+        withCredentials: true,
+      });
+      setWatchlist(res.data);
+    } catch (err) {
+      console.error("Error fetching watchlist:", err);
+    }
+  };
+
+  const handleDeleteFromState = (id) => {
+    setWatchlist((prev) => prev.filter((item) => item._id !== id));
+  };
+
   const labels = watchlist.map((subarray) => subarray["name"]);
   const data = {
     labels,
@@ -52,8 +68,14 @@ const WatchList = () => {
         <span className="counts"> {watchlist.length} / 50</span>
       </div>
       <ul className="list">
-        {watchlist.map((stock, index) => {
-          return <WatchListItem stock={stock} key={index} />;
+        {watchlist.map((stock) => {
+          return (
+            <WatchListItem
+              stock={stock}
+              key={stock._id}
+              onDelete={handleDeleteFromState}
+            />
+          );
         })}
       </ul>
       <DoughnutChart data={data} />
@@ -63,7 +85,7 @@ const WatchList = () => {
 
 export default WatchList;
 
-const WatchListItem = ({ stock }) => {
+const WatchListItem = ({ stock ,onDelete }) => {
   const [showWatchlistActions, setShowWatchlistActions] = useState(false);
 
   const handleMouseEnter = (e) => {
@@ -88,52 +110,40 @@ const WatchListItem = ({ stock }) => {
           <span className="price">{stock.price}</span>
         </div>
       </div>
-      {showWatchlistActions && <WatchListActions uid={stock.name} />}
+      {showWatchlistActions && (
+        <WatchListActions stock={stock} onDelete={onDelete} />
+      )}
     </li>
   );
 };
 
-const WatchListActions = ({ uid }) => {
+const WatchListActions = ({ stock, onDelete }) => {
   const generalContext = useContext(GeneralContext);
 
   const handleBuyClick = () => {
-    generalContext.openBuyWindow(uid);
-    
+    generalContext.openBuyWindow(stock._id);
+  };
+
+  const handleDrop = async () => {
+    try {
+      await axios.delete(`http://localhost:3002/watchlist/${stock._id}`, {
+        withCredentials: true,
+      });
+      onDelete(stock._id); // update UI state
+    } catch (err) {
+      console.error("Error deleting stock:", err);
+    }
   };
 
   return (
     <span className="actions">
       <span>
-        <Tooltip
-          title="Buy (B)"
-          placement="top"
-          arrow
-          onClick={handleBuyClick}
-          TransitionComponent={Grow}
-        >
+        <Tooltip title="Buy (B)" placement="top" arrow onClick={handleBuyClick}>
           <button className="buy">Buy</button>
         </Tooltip>
-        <Tooltip
-          title="Sell (S)"
-          placement="top"
-          arrow
-          TransitionComponent={Grow}
-        >
-          <button className="sell">Sell</button>
-        </Tooltip>
-        <Tooltip
-          title="Analytics (A)"
-          placement="top"
-          arrow
-          TransitionComponent={Grow}
-        >
-          <button className="action">
-            <BarChartOutlined className="icon" />
-          </button>
-        </Tooltip>
-        <Tooltip title="More" placement="top" arrow TransitionComponent={Grow}>
-          <button className="action">
-            <MoreHoriz className="icon" />
+        <Tooltip title="Drop (D)" placement="top" arrow>
+          <button className="sell" onClick={handleDrop}>
+            Drop
           </button>
         </Tooltip>
       </span>
