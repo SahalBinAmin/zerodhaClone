@@ -10,6 +10,9 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const sendMail = require("./utils/mailer");
+const session = require("express-session");
+const passport = require("./config/passport");
+
 const app = express();
 const authenticateToken = require("./middleware/auth");
 
@@ -34,6 +37,15 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
+app.use(
+  session({
+    secret: process.env.JWT_SECRET || "mySecret",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 // app.get("/:symbol", async (req, res) => {
 //   const { symbol } = req.params;
@@ -105,7 +117,7 @@ app.post("/buy/:id", authenticateToken, async (req, res) => {
     await sendMail(
       req.user.email,
       "Stock Purchase Confirmation",
-      `You successfully bought ${qty} shares of ${watchlistItem.name} at ₹${price}.`
+      `You successfully bought ${qty} shares of ${watchlistItem.name} at PKR${price}.`
     );
 
     return res.status(201).json({
@@ -211,6 +223,39 @@ app.post("/login", async (req, res) => {
     res.status(500).json({ message: "Error logging in" });
   }
 });
+
+//Google Auth Routes
+//Start Google OAuth
+app.get(
+  "/auth/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+    prompt: "select_account",
+  })
+);
+
+// Google Callback
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    failureRedirect: "http://localhost:3000/login",
+  }),
+  (req, res) => {
+    const token = jwt.sign(
+      { id: req.user._id, email: req.user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+    });
+
+    res.redirect("http://localhost:3001");
+  }
+);
 
 app.post("/logout", (req, res) => {
   res.clearCookie("token");

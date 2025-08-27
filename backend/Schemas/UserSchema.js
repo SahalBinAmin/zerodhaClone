@@ -1,4 +1,4 @@
-const { Schema } = require("mongoose");
+const { Schema, model } = require("mongoose");
 
 const UserSchema = new Schema({
   email: {
@@ -8,8 +8,21 @@ const UserSchema = new Schema({
   },
   password: {
     type: String,
-    required: true,
   },
+  googleId: {
+    type: String,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
+UserSchema.pre("save", function (next) {
+  if (!this.password && !this.googleId) {
+    return next(new Error("User must have either a password or a Google ID"));
+  }
+  next();
 });
 
 module.exports = UserSchema;

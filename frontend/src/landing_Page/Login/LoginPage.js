@@ -43,6 +43,11 @@ function Login() {
       setMessage(" Network error, try again later.");
     }
   };
+
+  //Google login by redirecting to backend
+  const handleGoogleLogin = () => {
+    window.location.href = "http://localhost:3002/auth/google";
+  };
   return (
     <div className="mb-5" style={{ maxWidth: "400px", margin: "2rem auto" }}>
       <h2>Login To Dashboard</h2>
@@ -85,6 +90,20 @@ function Login() {
           Login
         </button>
       </form>
+      <br></br>
+
+      <h4 style={{ textAlign: "center" }}>
+        <b>OR</b>
+      </h4>
+      <div className="text-center mt-3">
+        <button
+          onClick={handleGoogleLogin}
+          className="btn btn-primary w-100"
+          style={{ marginTop: "10px" }}
+        >
+          <i className="bi bi-google"></i> Login with Google
+        </button>
+      </div>
       {message && (
         <div className="mt-3 alert alert-info text-center" role="alert">
           {message}
