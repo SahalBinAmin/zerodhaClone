@@ -60,10 +60,6 @@ cd ../frontend && npm install
 cd ../dashboard && npm install
 ```
 
-### 3. Setup environment variables
-
-In `backend/.env`:
-
 
 
 ### 4. Run the apps
