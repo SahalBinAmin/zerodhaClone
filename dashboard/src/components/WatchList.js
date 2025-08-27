@@ -85,7 +85,7 @@ const WatchList = () => {
 
 export default WatchList;
 
-const WatchListItem = ({ stock ,onDelete }) => {
+const WatchListItem = ({ stock, onDelete }) => {
   const [showWatchlistActions, setShowWatchlistActions] = useState(false);
 
   const handleMouseEnter = (e) => {
@@ -129,7 +129,7 @@ const WatchListActions = ({ stock, onDelete }) => {
       await axios.delete(`http://localhost:3002/watchlist/${stock._id}`, {
         withCredentials: true,
       });
-      onDelete(stock._id); // update UI state
+      onDelete(stock._id);
     } catch (err) {
       console.error("Error deleting stock:", err);
     }

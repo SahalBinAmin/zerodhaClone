@@ -8,19 +8,27 @@ const BuyActionWindow = ({ uid }) => {
   const [stockPrice, setStockPrice] = useState(0.0);
 
   const { closeBuyWindow, triggerHoldingsRefresh } = useContext(GeneralContext);
+  
+  function getRandomDayChange() {
+    const change = (Math.random() * 6 - 3).toFixed(2);
+    return (change >= 0 ? "+" : "") + change + "%";
+  }
 
   const handleBuyClick = async () => {
     try {
-      await axios.post(`http://localhost:3002/buy/${uid}`, {
-        qty: stockQuantity,
-        avg: Number(stockPrice),
-        price: stockPrice,
-        net: stockQuantity * stockPrice,
-        day: new Date().toISOString(),
-      });
-
+      await axios.post(
+        `http://localhost:3002/buy/${uid}`,
+        {
+          qty: stockQuantity,
+          avg: Number(stockPrice),
+          price: stockPrice,
+          net: stockQuantity * stockPrice,
+          day: getRandomDayChange(),
+        },
+        { withCredentials: true }
+      );
       closeBuyWindow();
-      triggerHoldingsRefresh(); // ⬅ refresh holdings automatically
+      triggerHoldingsRefresh();
     } catch (err) {
       console.error("Error buying stock:", err);
     }
