@@ -16,6 +16,7 @@ function Login() {
 
   const API_URL = process.env.REACT_APP_API_URL;
   const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL;
+  const DASHBOARD_URL = process.env.REACT_APP_DASHBOARD_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,7 +37,7 @@ function Login() {
         setFormData({ email: "", password: "" });
 
         setTimeout(() => {
-          window.location.href = `${FRONTEND_URL}`;
+          window.location.href = `${DASHBOARD_URL}`;
         }, 200);
       } else {
         setMessage(` ${data.message || "Invalid credentials"}`);
