@@ -27,7 +27,10 @@ async function main() {
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://localhost:3001"],
+    origin: [
+      "https://zerodha-clone-seven-tan.vercel.app/",
+      "http://localhost:3001",
+    ],
     credentials: true,
   })
 );
