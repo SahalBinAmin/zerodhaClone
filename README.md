@@ -64,11 +64,7 @@ cd ../dashboard && npm install
 
 In `backend/.env`:
 
-```env
-PORT=3002
-MONGO_URL=your_mongodb_connection_uri
-JWT_SECRET=your_secret_key
-```
+
 
 ### 4. Run the apps
 
