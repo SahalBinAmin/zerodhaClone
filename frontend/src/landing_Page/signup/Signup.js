@@ -15,11 +15,12 @@ function Signup() {
       [e.target.name]: e.target.value,
     });
   };
+  const API_URL = process.env.REACT_APP_API_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:3002/signup", {
+      const res = await fetch(`${API_URL}/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

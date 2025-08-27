@@ -14,10 +14,13 @@ function Login() {
     });
   };
 
+  const API_URL = process.env.REACT_APP_API_URL;
+  const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:3002/login", {
+      const res = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -33,7 +36,7 @@ function Login() {
         setFormData({ email: "", password: "" });
 
         setTimeout(() => {
-          window.location.href = "http://localhost:3001";
+          window.location.href = `${FRONTEND_URL}`;
         }, 200);
       } else {
         setMessage(` ${data.message || "Invalid credentials"}`);
@@ -46,7 +49,7 @@ function Login() {
 
   //Google login by redirecting to backend
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:3002/auth/google";
+    window.location.href = `${API_URL}/auth/google`;
   };
   return (
     <div className="mb-5" style={{ maxWidth: "400px", margin: "2rem auto" }}>
