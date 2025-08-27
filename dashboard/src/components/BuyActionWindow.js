@@ -8,16 +8,18 @@ const BuyActionWindow = ({ uid }) => {
   const [stockPrice, setStockPrice] = useState(0.0);
 
   const { closeBuyWindow, triggerHoldingsRefresh } = useContext(GeneralContext);
-  
+
   function getRandomDayChange() {
     const change = (Math.random() * 6 - 3).toFixed(2);
     return (change >= 0 ? "+" : "") + change + "%";
   }
 
+  const API_URL = process.env.REACT_APP_API_URL;
+
   const handleBuyClick = async () => {
     try {
       await axios.post(
-        `http://localhost:3002/buy/${uid}`,
+        `${API_URL}/buy/${uid}`,
         {
           qty: stockQuantity,
           avg: Number(stockPrice),

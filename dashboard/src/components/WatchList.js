@@ -12,9 +12,12 @@ const WatchList = () => {
     fetchWatchlist();
   }, []);
 
+  const FRONTEND_URL = process.env.FRONTEND_URL;
+  const API_URL = process.env.REACT_APP_API_URL;
+
   const fetchWatchlist = async () => {
     try {
-      const res = await axios.get("http://localhost:3002/watchlist", {
+      const res = await axios.get(`${API_URL}/watchlist`, {
         withCredentials: true,
       });
       setWatchlist(res.data);
@@ -126,7 +129,7 @@ const WatchListActions = ({ stock, onDelete }) => {
 
   const handleDrop = async () => {
     try {
-      await axios.delete(`http://localhost:3002/watchlist/${stock._id}`, {
+      await axios.delete(`${API_URL}/watchlist/${stock._id}`, {
         withCredentials: true,
       });
       onDelete(stock._id);

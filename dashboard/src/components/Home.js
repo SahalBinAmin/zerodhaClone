@@ -6,15 +6,19 @@ import axios from "axios";
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
+
+  const FRONTEND_URL = process.env.FRONTEND_URL;
+  const API_URL = process.env.REACT_APP_API_URL;
+
   useEffect(() => {
     axios
-      .get("http://localhost:3002/allholdings", { withCredentials: true })
+      .get(`${API_URL}/allholdings`, { withCredentials: true })
       .then((res) => {
         console.log("Logged in user:", res.data);
         setLoading(false);
       })
       .catch(() => {
-        window.location.href = "http://localhost:3000/login";
+        window.location.href = `${FRONTEND_URL}/login`;
       });
   }, []);
   return (

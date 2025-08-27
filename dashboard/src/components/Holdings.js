@@ -7,9 +7,11 @@ function Holdings() {
   const [allHoldings, setHoldings] = useState([]);
   const { refreshHoldingsFlag } = useContext(GeneralContext);
 
+  const API_URL = process.env.REACT_APP_API_URL;
+
   const fetchHoldings = async () => {
     try {
-      const res = await axios.get("http://localhost:3002/allholdings", {
+      const res = await axios.get(`${API_URL}/allholdings`, {
         withCredentials: true,
       });
       setHoldings(res.data);
@@ -19,10 +21,9 @@ function Holdings() {
   };
 
   useEffect(() => {
-    fetchHoldings(); // load on mount
+    fetchHoldings();
   }, []);
 
-  // ⚡ Refresh whenever triggerHoldingsRefresh flips
   useEffect(() => {
     fetchHoldings();
   }, [refreshHoldingsFlag]);
@@ -42,10 +43,10 @@ function Holdings() {
 
   const handleDrop = async (id) => {
     try {
-      await axios.delete(`http://localhost:3002/allholdings/${id}`, {
+      await axios.delete(`${API_URL}/allholdings/${id}`, {
         withCredentials: true,
       });
-      fetchHoldings(); // refresh after delete
+      fetchHoldings();
     } catch (err) {
       console.error("Error deleting stock:", err);
     }

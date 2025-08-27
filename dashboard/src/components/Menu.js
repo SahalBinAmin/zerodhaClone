@@ -11,13 +11,17 @@ const Menu = () => {
   const handleProfileClick = (index) => {
     setIsProfileDropdownOpen(!isProfileDropdownOpen);
   };
+
+  const FRONTEND_URL = process.env.FRONTEND_URL;
+  const API_URL = process.env.REACT_APP_API_URL;
+
   const logOut = async () => {
     try {
-      await fetch("http://localhost:3002/logout", {
+      await fetch(`${API_URL}/logout`, {
         method: "POST",
         credentials: "include",
       });
-      window.location.href = "http://localhost:3000/"; 
+      window.location.href = `${FRONTEND_URL}`;
     } catch (err) {
       console.error("Logout failed:", err);
     }
