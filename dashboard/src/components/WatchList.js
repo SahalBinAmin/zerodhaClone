@@ -127,6 +127,8 @@ const WatchListActions = ({ stock, onDelete }) => {
     generalContext.openBuyWindow(stock._id);
   };
 
+  const API_URL = process.env.REACT_APP_API_URL;
+
   const handleDrop = async () => {
     try {
       await axios.delete(`${API_URL}/watchlist/${stock._id}`, {
