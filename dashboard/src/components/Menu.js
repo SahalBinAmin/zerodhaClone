@@ -12,7 +12,7 @@ const Menu = () => {
     setIsProfileDropdownOpen(!isProfileDropdownOpen);
   };
 
-  const FRONTEND_URL = process.env.FRONTEND_URL;
+  const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL;
   const API_URL = process.env.REACT_APP_API_URL;
 
   const logOut = async () => {
@@ -21,7 +21,7 @@ const Menu = () => {
         method: "POST",
         credentials: "include",
       });
-      window.location.href = `${FRONTEND_URL}`;
+      window.location.href = FRONTEND_URL;
     } catch (err) {
       console.error("Logout failed:", err);
     }
