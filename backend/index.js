@@ -28,8 +28,8 @@ async function main() {
 app.use(
   cors({
     origin: [
-      "https://zerodha-clone-seven-tan.vercel.app/",
-      "https://zerodha-clone-cd2u.vercel.app/",
+      "https://zerodha-clone-seven-tan.vercel.app",
+      "https://zerodha-clone-cd2u.vercel.app",
     ],
     credentials: true,
   })
