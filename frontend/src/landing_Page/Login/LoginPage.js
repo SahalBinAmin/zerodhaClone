@@ -37,7 +37,7 @@ function Login() {
         setFormData({ email: "", password: "" });
 
         setTimeout(() => {
-          window.location.href = `${DASHBOARD_URL}`;
+          window.location.href = DASHBOARD_URL;
         }, 200);
       } else {
         setMessage(` ${data.message || "Invalid credentials"}`);
