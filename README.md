@@ -1,41 +1,64 @@
-
-# 📈 Zerodha Clone – MERN Stack Trading Dashboard
+# 📈 Zerodha Clone – MERN Stack Trading Platform
 
 A full-stack clone of **Zerodha** built with the **MERN stack** (MongoDB, Express.js, React, Node.js).
-This project demonstrates authentication, a trading dashboard, and portfolio management features.
+This project demonstrates **authentication, portfolio tracking, trading dashboard, and UI with multiple React apps**.
 
 ---
 
 ## 🚀 Features
 
-- 🔐 **User Authentication** (JWT + bcrypt)
-- 📊 **Holdings & Portfolio Dashboard** – track investments, net gain/loss
+- 🔐 **User Authentication** – Local & Google OAuth (JWT + bcrypt + Passport)
+- 📊 **Holdings & Portfolio Dashboard** – live tracking of investments, net gain/loss
 - 📝 **Orders & Positions Management**
 - 💾 **MongoDB Integration** – persistent data storage
-- ⚡ **Express.js REST API**
-- 🎨 **Responsive UI** with React + Bootstrap
-- 📁 **Monorepo Setup** – separate `frontend`, `backend`, `dashboard`
+- ⚡ **Express.js REST API** with session & JWT support
+- 🎨 **Two React Apps**
+
+  - `frontend` → client-facing app (trading interface)
+  - `dashboard` → advanced portfolio & analytics dashboard
+
+- 📁 **Monorepo-style structure** – `backend`, `frontend`, `dashboard`
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** React, Bootstrap, Axios
-- **Backend:** Node.js, Express.js
-- **Database:** MongoDB (Mongoose)
-- **Authentication:** JWT, bcrypt
-- **Version Control:** Git & GitHub
+- **Frontend (Client App):**
+
+  - React 19, React Router v7
+  - React Scripts (CRA)
+  
+- **Dashboard (Analytics App):**
+
+  - React 19, React Router v7
+  - Material-UI (MUI v7)
+  - Chart.js + react-chartjs-2 (data visualization)
+  - Axios, jwt-decode
+
+- **Backend (API):**
+
+  - Node.js, Express.js
+  - MongoDB + Mongoose
+  - Passport (Google OAuth 2.0, Local Strategy)
+  - Authentication: JWT, bcrypt, sessions, cookie-parser
+  - Nodemailer (email support)
 
 ---
 
 ## 📂 Project Structure
 
 ```
-zerodhaProject/
-│── backend/        # Express.js + MongoDB API
-│── frontend/       # React frontend (client app)
-│── dashboard/      # React-based trading dashboard
-│── README.md
+zerodhaPProject/
+│── backend/         # Express.js + MongoDB API
+|                    # Mongoose models
+|                    # API routes
+|                    # Backend entry point
+│
+│── frontend/       # React client app (trading interface)
+│   
+│── dashboard/      # React dashboard app (analytics & portfolio)
+│
+└── README.md
 ```
 
 ---
@@ -46,13 +69,13 @@ zerodhaProject/
 
 ```bash
 git clone https://github.com/SahalBinAmin/zerodhaClone
-cd zerodhaProject
+cd zerodhaPProject
 ```
 
 ### 2. Install dependencies
 
 Each folder (`backend`, `frontend`, `dashboard`) has its own environment.
-Run the following in each:
+Run the following:
 
 ```bash
 cd backend && npm install
@@ -61,24 +84,23 @@ cd ../dashboard && npm install
 ```
 
 
+### 3. Run the apps
 
-### 4. Run the apps
-
-- Start backend:
+- **Backend** (Express API):
 
 ```bash
 cd backend
-npm start
+npm run dev 
 ```
 
-- Start frontend:
+- **Frontend** (Trading app):
 
 ```bash
 cd frontend
 npm start
 ```
 
-- Start dashboard:
+- **Dashboard** (Analytics app):
 
 ```bash
 cd dashboard
